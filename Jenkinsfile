@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Source code fetched successfully.'
+                echo 'Source CODE fetched successfully.'
             }
         }
 
