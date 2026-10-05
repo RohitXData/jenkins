@@ -4,28 +4,43 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Source CODE fetched successfully.'
+                echo 'Source code fetched from GitHub...'
             }
         }
 
-        stage('Build') {
+        stage('Compile') {
             steps {
-                echo 'Building project...'
-                bat 'echo Build Passed'
+                echo 'Compiling Java sources...'
+                bat 'mvn clean compile'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running automated tests...'
-                bat 'echo All Tests Passed Successfully'
+                echo 'Running unit tests...'
+                bat 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo 'Packaging application...'
+                bat 'mvn package -DskipTests'
             }
         }
     }
 
     post {
+        always {
+            junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+        }
         success {
-            echo 'PIPELINE STATUS: SUCCESS'
+            echo '====================================='
+            echo 'STATUS: SUCCESS (MAVEN BUILD PASSED)'
+            echo '====================================='
+        }
+        failure {
+            echo 'STATUS: FAILED'
         }
     }
 }
