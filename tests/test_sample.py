@@ -1,1 +1,1 @@
-def test_pass(): assert True 
+def test_paSs(): assert True 
